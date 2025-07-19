@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>복지 추천 결과 - 남해군 노인 복지 추천</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 커스텀 스타일 -->
+    <style>
+        :root {
+            --primary-500: #265DAB;
+            --primary-600: #1e40af;
+            --primary-100: #dbeafe;
+            --secondary-100: #E9F0FA;
+            --accent-400: #FFE66D;
+            --neutral-50: #F9F9F9;
+            --neutral-600: #4A4A4A;
+            --success-500: #10b981;
+            --warning-500: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--neutral-50);
+        }
+        
+        .text-size-normal {
+            font-size: 1.125rem;
+            line-height: 1.7;
+        }
+        
+        .text-size-medium {
+            font-size: 1.375rem;
+            line-height: 1.6;
+        }
+        
+        .text-size-large {
+            font-size: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            line-height: 1.5;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-600);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-100);
+            color: var(--primary-600);
+            border: 1px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary-600);
+            border: 2px solid var(--primary-500);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-500);
+            color: white;
+        }
+        
+        .btn-accessibility {
+            min-height: 40px;
+            min-width: 40px;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-accessibility:hover {
+            background-color: var(--primary-100);
+            border-color: var(--primary-500);
+        }
+        
+        .welfare-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .welfare-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .welfare-card.priority-1 {
+            border-left: 4px solid var(--primary-500);
+        }
+        
+        .welfare-card.priority-2 {
+            border-left: 4px solid var(--accent-400);
+        }
+        
+        .welfare-card.priority-3 {
+            border-left: 4px solid var(--success-500);
+        }
+        
+        .welfare-card.priority-4 {
+            border-left: 4px solid var(--warning-500);
+        }
+        
+        .welfare-card.priority-5 {
+            border-left: 4px solid #8b5cf6;
+        }
+        
+        .priority-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .priority-badge.priority-1 {
+            background-color: var(--primary-500);
+            color: white;
+        }
+        
+        .priority-badge.priority-2 {
+            background-color: var(--accent-400);
+            color: var(--neutral-600);
+        }
+        
+        .priority-badge.priority-3 {
+            background-color: var(--success-500);
+            color: white;
+        }
+        
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        
+        .category-badge.health {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .category-badge.life {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .category-badge.economic {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .category-badge.social {
+            background-color: #f3e8ff;
+            color: #7c3aed;
+        }
+        
+        .category-badge.housing {
+            background-color: #fed7aa;
+            color: #c2410c;
+        }
+        
+        .floating-voice {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+        
+        .floating-voice:hover {
+            background-color: var(--primary-600);
+            transform: scale(1.1);
+        }
+        
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .welfare-card {
+            background-color: #1a1a1a !important;
+            border-color: #ffffff !important;
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .btn-primary {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+        }
+        
+        .result-header {
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
+            color: white;
+            padding: 3rem 1rem;
+            text-align: center;
+        }
+        
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+        
+        @media (max-width: 768px) {
+            .btn {
+                min-height: 48px;
+                padding: 0.875rem 1.5rem;
+            }
+            
+            .welfare-card {
+                margin-bottom: 1rem;
+            }
+            
+            .result-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-size-normal" id="main-body">
+    <!-- 접근성 스킵 링크 -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50">
+        본문으로 건너뛰기
+    </a>
+    
+    <!-- 헤더 -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">남</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">
+                        남해군 노인 복지 추천
+                    </h1>
+                </div>
+                
+                <!-- 접근성 도구 -->
+                <div class="flex items-center gap-2">
+                    <button id="font-size-btn" class="btn-accessibility" title="글자 크기 조절" aria-label="글자 크기 조절">
+                        <span class="font-bold">가</span>
+                    </button>
+                    <button id="voice-toggle-btn" class="btn-accessibility" title="음성 안내 토글" aria-label="음성 안내 토글">
+                        🔊
+                    </button>
+                    <button id="high-contrast-btn" class="btn-accessibility" title="고대비 모드" aria-label="고대비 모드">
+                        🌓
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 결과 헤더 -->
+    <div class="result-header">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-3xl font-bold mb-2">복지 혜택 추천 결과</h2>
+            <p class="text-blue-100 text-lg mb-2" id="user-greeting">
+                어르신께 맞는 복지 혜택을 찾았습니다
+            </p>
+            <p class="text-blue-200 text-sm" id="completion-date">
+                <!-- 완료 날짜가 여기에 표시됩니다 -->
+            </p>
+            
+            <div class="result-stats" id="result-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="total-recommendations">0</span>
+                    <span class="stat-label">추천 복지 혜택</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="confidence-score">0%</span>
+                    <span class="stat-label">분석 정확도</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="user-key-display">-</span>
+                    <span class="stat-label">조회 키</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- 추천 결과 목록 -->
+            <div id="recommendations-container">
+                <!-- 추천 결과가 동적으로 생성됩니다 -->
+            </div>
+
+            <!-- 하단 액션 -->
+            <div class="mt-12 bg-white rounded-lg p-6 shadow-sm border border-gray-200">
+                <div class="text-center">
+                    <h3 class="text-xl font-semibold mb-4">결과를 저장하고 나중에 확인하세요</h3>
+                    <p class="text-gray-600 mb-6">
+                        위의 <strong id="user-key-text">조회 키</strong>를 기록해두시면 언제든지 결과를 다시 확인할 수 있습니다.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button id="print-btn" class="btn btn-primary">
+                            🖨️ 결과 인쇄하기
+                        </button>
+                        <button id="save-btn" class="btn btn-secondary">
+                            📱 조회 키 저장하기
+                        </button>
+                        <button id="new-survey-btn" class="btn btn-outline">
+                            🔄 새로운 설문하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 추가 도움말 -->
+            <div class="mt-8 bg-blue-50 rounded-lg p-6 border border-blue-200">
+                <h3 class="text-lg font-semibold text-blue-900 mb-3">📋 복지 신청 도움말</h3>
+                <div class="text-blue-800 space-y-2">
+                    <p>• 복지 신청 시 신분증과 관련 서류를 준비해주세요</p>
+                    <p>• 읍·면 행정복지센터에서 직접 도움을 받을 수 있습니다</p>
+                    <p>• 문의사항이 있으시면 남해군청 복지정책과(055-860-8300)로 연락주세요</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">남해군청</h4>
+                    <p class="text-gray-300">경상남도 남해군 남해읍 홍현길 35</p>
+                    <p class="text-gray-300">전화: 055-860-8000</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">문의 및 도움</h4>
+                    <p class="text-gray-300">복지정책과: 055-860-8300</p>
+                    <p class="text-gray-300">기술지원: 055-860-8100</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">이용 안내</h4>
+                    <a href="#" class="text-gray-300 hover:text-white block">사용 방법</a>
+                    <a href="#" class="text-gray-300 hover:text-white block">개인정보 처리방침</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2024 남해군청. 모든 권리 보유.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 플로팅 음성 버튼 -->
+    <div class="floating-voice" id="floating-voice-btn" title="음성 안내" aria-label="음성 안내 버튼">
+        🔊
+    </div>
+
+    <!-- 복지 상세 정보 모달 -->
+    <div id="welfare-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-4">
+                        <h3 class="text-xl font-bold" id="modal-title">복지 상세 정보</h3>
+                        <button id="modal-close" class="text-gray-400 hover:text-gray-600">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div id="modal-content">
+                        <!-- 모달 내용이 동적으로 생성됩니다 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수
+        let isVoiceEnabled = false;
+        let isHighContrast = false;
+        let fontSizeLevel = 1;
+        let speechSynthesis = window.speechSynthesis;
+        let resultData = null;
+        
+        // API 기본 URL
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        // DOM 요소들
+        const recommendationsContainer = document.getElementById('recommendations-container');
+        const userGreeting = document.getElementById('user-greeting');
+        const completionDate = document.getElementById('completion-date');
+        const totalRecommendations = document.getElementById('total-recommendations');
+        const confidenceScore = document.getElementById('confidence-score');
+        const userKeyDisplay = document.getElementById('user-key-display');
+        const userKeyText = document.getElementById('user-key-text');
+        const printBtn = document.getElementById('print-btn');
+        const saveBtn = document.getElementById('save-btn');
+        const newSurveyBtn = document.getElementById('new-survey-btn');
+        const welfareModal = document.getElementById('welfare-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalContent = document.getElementById('modal-content');
+        const modalClose = document.getElementById('modal-close');
+        const fontSizeBtn = document.getElementById('font-size-btn');
+        const voiceToggleBtn = document.getElementById('voice-toggle-btn');
+        const highContrastBtn = document.getElementById('high-contrast-btn');
+        const floatingVoiceBtn = document.getElementById('floating-voice-btn');
+        const mainBody = document.getElementById('main-body');
+        
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserPreferences();
+            initializeEventListeners();
+            loadResults();
+        });
+        
+        // 이벤트 리스너 초기화
+        function initializeEventListeners() {
+            printBtn.addEventListener('click', printResults);
+            saveBtn.addEventListener('click', saveUserKey);
+            newSurveyBtn.addEventListener('click', startNewSurvey);
+            modalClose.addEventListener('click', closeModal);
+            
+            // 접근성 버튼들
+            fontSizeBtn.addEventListener('click', toggleFontSize);
+            voiceToggleBtn.addEventListener('click', toggleVoice);
+            highContrastBtn.addEventListener('click', toggleHighContrast);
+            floatingVoiceBtn.addEventListener('click', toggleVoice);
+            
+            // 모달 배경 클릭 시 닫기
+            welfareModal.addEventListener('click', function(e) {
+                if (e.target === welfareModal) {
+                    closeModal();
+                }
+            });
+            
+            // 키보드 접근성
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+        
+        // 결과 데이터 로드
+        async function loadResults() {
+            // URL에서 userKey 파라미터 추출
+            const urlParams = new URLSearchParams(window.location.search);
+            const userKey = urlParams.get('userKey');
+            
+            if (!userKey) {
+                alert('잘못된 접근입니다.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/results/${userKey}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultData = data;
+                    displayResults(data);
+                    
+                    if (isVoiceEnabled) {
+                        speak(`${data.user_name}님의 복지 추천 결과를 불러왔습니다.`);
+                    }
+                } else {
+                    alert('결과를 불러오는데 실패했습니다: ' + data.error);
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버 연결에 실패했습니다.');
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // 결과 표시
+        function displayResults(data) {
+            // 헤더 정보 업데이트
+            userGreeting.textContent = `${data.user_name}님께 맞는 ${data.recommendations.length}가지 복지 혜택을 찾았습니다`;
+            completionDate.textContent = `완료일: ${formatDate(data.completion_time)}`;
+            
+            // 통계 정보 업데이트
+            totalRecommendations.textContent = data.recommendations.length;
+            confidenceScore.textContent = `${Math.round(data.confidence_score || 85)}%`;
+            
+            // userKey 추출 (URL에서)
+            const urlParams = new URLSearchParams(window.location.search);
+            const userKey = urlParams.get('userKey');
+            userKeyDisplay.textContent = userKey;
+            userKeyText.textContent = userKey;
+            
+            // 추천 결과 렌더링
+            renderRecommendations(data.recommendations);
+        }
+        
+        // 추천 결과 렌더링
+        function renderRecommendations(recommendations) {
+            recommendationsContainer.innerHTML = '';
+            
+            recommendations.forEach((welfare, index) => {
+                const welfareCard = document.createElement('div');
+                welfareCard.className = `welfare-card priority-${welfare.priority}`;
+                
+                const categoryClass = getCategoryClass(welfare.category);
+                
+                welfareCard.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex items-start justify-between">
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-3">
+                                    <span class="priority-badge priority-${welfare.priority}">
+                                        ${welfare.priority}순위
+                                    </span>
+                                    <span class="category-badge ${categoryClass}">
+                                        ${getCategoryIcon(welfare.category)} ${welfare.category}
+                                    </span>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">
+                                    ${welfare.name}
+                                </h3>
+                                <p class="text-gray-600 mb-4">
+                                    ${welfare.description}
+                                </p>
+                                <div class="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-4">
+                                    <span>💰 ${welfare.benefit_amount}</span>
+                                    <span>📋 ${welfare.benefit_type}</span>
+                                    <span>🎯 적합도 ${welfare.match_score}%</span>
+                                </div>
+                            </div>
+                            <div class="ml-4">
+                                <div class="text-4xl">${getCategoryIcon(welfare.category)}</div>
+                            </div>
+                        </div>
+                        <div class="mt-6 flex gap-3">
+                            <button class="btn btn-primary" onclick="showWelfareDetails('${welfare.id}')">
+                                신청 방법 보기
+                            </button>
+                            <button class="btn btn-secondary" onclick="showWelfareDetails('${welfare.id}')">
+                                상세 정보
+                            </button>
+                            <button class="btn btn-outline" onclick="speakWelfare('${welfare.name}', '${welfare.description}')">
+                                🔊 음성 안내
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                recommendationsContainer.appendChild(welfareCard);
+            });
+        }
+        
+        // 복지 상세 정보 표시
+        function showWelfareDetails(welfareId) {
+            const welfare = resultData.recommendations.find(w => w.id === welfareId);
+            
+            if (!welfare) {
+                alert('복지 정보를 찾을 수 없습니다.');
+                return;
+            }
+            
+            modalTitle.textContent = welfare.name;
+            modalContent.innerHTML = `
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">📋 지원 내용</h4>
+                        <p class="text-gray-600">${welfare.description}</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-2">💰 지원 금액</h4>
+                            <p class="text-gray-600">${welfare.benefit_amount}</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800 mb-2">📦 지원 형태</h4>
+                            <p class="text-gray-600">${welfare.benefit_type}</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">📝 신청 방법</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            ${getApplicationMethod(welfare)}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">📄 필요 서류</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            ${getRequiredDocuments(welfare)}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="font-semibold text-gray-800 mb-2">📞 문의처</h4>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            ${getContactInfo(welfare)}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            welfareModal.classList.remove('hidden');
+            
+            if (isVoiceEnabled) {
+                speak(`${welfare.name}의 상세 정보를 표시합니다.`);
+            }
+        }
+        
+        // 모달 닫기
+        function closeModal() {
+            welfareModal.classList.add('hidden');
+        }
+        
+        // 복지 음성 안내
+        function speakWelfare(name, description) {
+            speak(`${name}. ${description}`);
+        }
+        
+        // 결과 인쇄
+        function printResults() {
+            if (isVoiceEnabled) {
+                speak('결과를 인쇄합니다.');
+            }
+            
+            window.print();
+        }
+        
+        // 조회 키 저장
+        function saveUserKey() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userKey = urlParams.get('userKey');
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(userKey).then(() => {
+                    alert(`조회 키 "${userKey}"가 클립보드에 복사되었습니다.`);
+                    
+                    if (isVoiceEnabled) {
+                        speak('조회 키가 클립보드에 복사되었습니다.');
+                    }
+                }).catch(() => {
+                    alert(`조회 키: ${userKey}\n\n이 키를 기록해두세요.`);
+                });
+            } else {
+                alert(`조회 키: ${userKey}\n\n이 키를 기록해두세요.`);
+            }
+        }
+        
+        // 새로운 설문 시작
+        function startNewSurvey() {
+            if (confirm('새로운 설문을 시작하시겠습니까?')) {
+                window.location.href = 'index.html';
+            }
+        }
+        
+        // 유틸리티 함수들
+        function getCategoryClass(category) {
+            const categoryMap = {
+                '건강의료': 'health',
+                '생활지원': 'life',
+                '경제지원': 'economic',
+                '사회참여': 'social',
+                '주거지원': 'housing'
+            };
+            return categoryMap[category] || 'health';
+        }
+        
+        function getCategoryIcon(category) {
+            const iconMap = {
+                '건강의료': '🏥',
+                '생활지원': '🏠',
+                '경제지원': '💰',
+                '사회참여': '👥',
+                '주거지원': '🏡'
+            };
+            return iconMap[category] || '📋';
+        }
+        
+        function getApplicationMethod(welfare) {
+            const methodMap = {
+                'basic_pension': '읍·면 행정복지센터 방문 또는 온라인 신청<br><a href="https://www.bokjiro.go.kr" target="_blank" class="text-blue-600">복지로 바로가기</a>',
+                'namhae_customized_care': '거주지 관할 읍·면 행정복지센터 방문 또는 전화 상담<br>전화: 055-860-8300',
+                'health_medical_support': '관할 보건소 방문 신청<br>남해군 보건소: 055-860-8000',
+                'senior_jobs': '시·군·구 또는 수행기관에서 관련 서류 제출<br>남해군청 노인복지과: 055-860-8300',
+                'senior_housing': '해당 시설 또는 시·군·구 담당 부서에 문의',
+                'basic_livelihood': '거주지 관할 읍·면 행정복지센터 방문 신청'
+            };
+            return methodMap[welfare.id] || '관할 행정복지센터 또는 남해군청 복지정책과(055-860-8300)에 문의해주세요.';
+        }
+        
+        function getRequiredDocuments(welfare) {
+            const docMap = {
+                'basic_pension': '• 신분증<br>• 기초연금 신청서<br>• 소득재산 신고서<br>• 통장 사본',
+                'namhae_customized_care': '• 신분증<br>• 소득 확인 서류<br>• 건강 상태 확인서(해당시)',
+                'health_medical_support': '• 신분증<br>• 의료진단서<br>• 소득 확인 서류<br>• 의료비 영수증',
+                'senior_jobs': '• 신분증<br>• 참여신청서<br>• 개인정보 수집 동의서<br>• 관련 자격증(해당시)',
+                'senior_housing': '• 신분증<br>• 소득 확인 서류<br>• 건강진단서<br>• 입소 신청서',
+                'basic_livelihood': '• 신분증<br>• 소득 확인 서류<br>• 재산 확인 서류<br>• 가족관계 증명서'
+            };
+            return docMap[welfare.id] || '자세한 서류는 해당 기관에 문의해주세요.';
+        }
+        
+        function getContactInfo(welfare) {
+            const contactMap = {
+                'basic_pension': '국민연금공단 콜센터: 1355<br>남해군청 복지정책과: 055-860-8300',
+                'namhae_customized_care': '남해군청 노인복지과: 055-860-8300',
+                'health_medical_support': '남해군 보건소: 055-860-8000',
+                'senior_jobs': '남해군청 노인복지과: 055-860-8300',
+                'senior_housing': '남해군청 복지정책과: 055-860-8300',
+                'basic_livelihood': '남해군청 복지정책과: 055-860-8300'
+            };
+            return contactMap[welfare.id] || '남해군청 복지정책과: 055-860-8300<br>남해군청 대표전화: 055-860-8000';
+        }
+        
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // 접근성 기능들 (이전 페이지와 동일)
+        function toggleFontSize() {
+            fontSizeLevel = (fontSizeLevel % 3) + 1;
+            
+            const body = document.body;
+            body.classList.remove('text-size-normal', 'text-size-medium', 'text-size-large');
+            
+            switch (fontSizeLevel) {
+                case 1:
+                    body.classList.add('text-size-normal');
+                    break;
+                case 2:
+                    body.classList.add('text-size-medium');
+                    break;
+                case 3:
+                    body.classList.add('text-size-large');
+                    break;
+            }
+            
+            localStorage.setItem('fontSizeLevel', fontSizeLevel);
+            
+            if (isVoiceEnabled) {
+                speak(`글자 크기를 ${fontSizeLevel}단계로 조절했습니다.`);
+            }
+        }
+        
+        function toggleVoice() {
+            isVoiceEnabled = !isVoiceEnabled;
+            
+            if (isVoiceEnabled) {
+                voiceToggleBtn.classList.add('bg-blue-100', 'border-blue-500');
+                floatingVoiceBtn.classList.add('bg-blue-700');
+                speak('음성 안내가 켜졌습니다.');
+            } else {
+                voiceToggleBtn.classList.remove('bg-blue-100', 'border-blue-500');
+                floatingVoiceBtn.classList.remove('bg-blue-700');
+                
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+            }
+            
+            localStorage.setItem('isVoiceEnabled', isVoiceEnabled);
+        }
+        
+        function toggleHighContrast() {
+            isHighContrast = !isHighContrast;
+            
+            if (isHighContrast) {
+                mainBody.classList.add('high-contrast');
+                highContrastBtn.classList.add('bg-yellow-400', 'border-yellow-600');
+            } else {
+                mainBody.classList.remove('high-contrast');
+                highContrastBtn.classList.remove('bg-yellow-400', 'border-yellow-600');
+            }
+            
+            localStorage.setItem('isHighContrast', isHighContrast);
+            
+            if (isVoiceEnabled) {
+                speak(`고대비 모드가 ${isHighContrast ? '켜졌습니다' : '꺼졌습니다'}.`);
+            }
+        }
+        
+        function speak(text) {
+            if (!speechSynthesis) return;
+            
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 0.8;
+            utterance.pitch = 1;
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        function loadUserPreferences() {
+            const savedFontSize = localStorage.getItem('fontSizeLevel');
+            if (savedFontSize) {
+                fontSizeLevel = parseInt(savedFontSize);
+                const body = document.body;
+                body.classList.remove('text-size-normal', 'text-size-medium', 'text-size-large');
+                
+                switch (fontSizeLevel) {
+                    case 1:
+                        body.classList.add('text-size-normal');
+                        break;
+                    case 2:
+                        body.classList.add('text-size-medium');
+                        break;
+                    case 3:
+                        body.classList.add('text-size-large');
+                        break;
+                }
+            }
+            
+            const savedVoice = localStorage.getItem('isVoiceEnabled');
+            if (savedVoice === 'true') {
+                isVoiceEnabled = true;
+                voiceToggleBtn.classList.add('bg-blue-100', 'border-blue-500');
+                floatingVoiceBtn.classList.add('bg-blue-700');
+            }
+            
+            const savedHighContrast = localStorage.getItem('isHighContrast');
+            if (savedHighContrast === 'true') {
+                isHighContrast = true;
+                mainBody.classList.add('high-contrast');
+                highContrastBtn.classList.add('bg-yellow-400', 'border-yellow-600');
+            }
+        }
+    </script>
+</body>
+</html> 

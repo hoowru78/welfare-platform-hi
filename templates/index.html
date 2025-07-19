@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>남해군 노인 복지 추천 서비스</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 커스텀 스타일 -->
+    <style>
+        :root {
+            --primary-500: #265DAB;
+            --primary-600: #1e40af;
+            --primary-100: #dbeafe;
+            --secondary-100: #E9F0FA;
+            --accent-400: #FFE66D;
+            --neutral-50: #F9F9F9;
+            --neutral-600: #4A4A4A;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--neutral-50);
+        }
+        
+        .text-size-normal {
+            font-size: 1.125rem;
+            line-height: 1.7;
+        }
+        
+        .text-size-medium {
+            font-size: 1.375rem;
+            line-height: 1.6;
+        }
+        
+        .text-size-large {
+            font-size: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            line-height: 1.5;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-600);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-100);
+            color: var(--primary-600);
+            border: 1px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+            border-color: #94a3b8;
+        }
+        
+        .btn-large {
+            min-height: 56px;
+            padding: 1rem 2rem;
+            font-size: 1.25rem;
+        }
+        
+        .btn-accessibility {
+            min-height: 40px;
+            min-width: 40px;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-accessibility:hover {
+            background-color: var(--primary-100);
+            border-color: var(--primary-500);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .floating-voice {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+        
+        .floating-voice:hover {
+            background-color: var(--primary-600);
+            transform: scale(1.1);
+        }
+        
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .card {
+            background-color: #1a1a1a !important;
+            border-color: #ffffff !important;
+        }
+        
+        .high-contrast .btn-primary {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+        }
+        
+        @media (max-width: 768px) {
+            .btn {
+                min-height: 48px;
+                padding: 0.875rem 1.5rem;
+            }
+            
+            .card-body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-size-normal" id="main-body">
+    <!-- 접근성 스킵 링크 -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50">
+        본문으로 건너뛰기
+    </a>
+    
+    <!-- 헤더 -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">남</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">
+                        남해군 노인 복지 추천
+                    </h1>
+                </div>
+                
+                <!-- 접근성 도구 -->
+                <div class="flex items-center gap-2">
+                    <button id="font-size-btn" class="btn-accessibility" title="글자 크기 조절" aria-label="글자 크기 조절">
+                        <span class="font-bold">가</span>
+                    </button>
+                    <button id="voice-toggle-btn" class="btn-accessibility" title="음성 안내 토글" aria-label="음성 안내 토글">
+                        🔊
+                    </button>
+                    <button id="high-contrast-btn" class="btn-accessibility" title="고대비 모드" aria-label="고대비 모드">
+                        🌓
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 콘텐츠 -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- 서비스 소개 -->
+            <section class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                    어르신 맞춤형 복지 혜택을 찾아드려요
+                </h2>
+                <p class="text-xl text-gray-600 leading-relaxed">
+                    간단한 설문을 통해 어르신께 가장 적합한 복지 혜택을 추천해드립니다
+                </p>
+            </section>
+
+            <!-- 이용 방법 -->
+            <section class="mb-12">
+                <h3 class="text-2xl font-bold text-center mb-8">이용 방법</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="text-4xl mb-4">📝</div>
+                            <h4 class="text-xl font-semibold mb-2">1. 설문 작성</h4>
+                            <p class="text-gray-600">건강, 생활, 경제 상황에 대한 간단한 질문에 답하세요</p>
+                        </div>
+                    </div>
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="text-4xl mb-4">🤖</div>
+                            <h4 class="text-xl font-semibold mb-2">2. AI 분석</h4>
+                            <p class="text-gray-600">인공지능이 어르신의 상황을 분석해 맞춤형 복지를 찾아드려요</p>
+                        </div>
+                    </div>
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <div class="text-4xl mb-4">🎯</div>
+                            <h4 class="text-xl font-semibold mb-2">3. 추천 결과</h4>
+                            <p class="text-gray-600">신청 가능한 복지 혜택과 신청 방법을 안내해드려요</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 시작하기 버튼 -->
+            <section class="text-center mb-8">
+                <button id="start-survey-btn" class="btn btn-primary btn-large">
+                    <span class="text-2xl mr-2">▶️</span>
+                    설문 시작하기
+                </button>
+            </section>
+
+            <!-- 기존 결과 조회 -->
+            <section class="text-center mb-8">
+                <a href="#" id="lookup-results-btn" class="text-blue-600 hover:text-blue-700 text-lg">
+                    기존 결과 조회하기 →
+                </a>
+            </section>
+
+            <!-- 주요 복지 혜택 미리보기 -->
+            <section class="mb-12">
+                <h3 class="text-2xl font-bold text-center mb-8">주요 복지 혜택</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="text-2xl">💰</div>
+                                <h4 class="text-xl font-semibold">기초연금</h4>
+                            </div>
+                            <p class="text-gray-600 mb-3">
+                                65세 이상 어르신에게 월 최대 342,510원까지 지급
+                            </p>
+                            <div class="text-sm text-gray-500">
+                                <span>💡 소득 기준 충족 시 지급</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="text-2xl">🏥</div>
+                                <h4 class="text-xl font-semibold">의료비 지원</h4>
+                            </div>
+                            <p class="text-gray-600 mb-3">
+                                노인성 질환 치료비 및 의료비 지원
+                            </p>
+                            <div class="text-sm text-gray-500">
+                                <span>💡 안질환, 무릎관절증, 치아 등</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="text-2xl">🏠</div>
+                                <h4 class="text-xl font-semibold">노인맞춤돌봄서비스</h4>
+                            </div>
+                            <p class="text-gray-600 mb-3">
+                                일상생활이 어려운 어르신에게 돌봄서비스 제공
+                            </p>
+                            <div class="text-sm text-gray-500">
+                                <span>💡 남해군 특화 서비스</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="text-2xl">👥</div>
+                                <h4 class="text-xl font-semibold">노인일자리</h4>
+                            </div>
+                            <p class="text-gray-600 mb-3">
+                                활동적인 노후생활을 위한 일자리 및 사회활동 지원
+                            </p>
+                            <div class="text-sm text-gray-500">
+                                <span>💡 공공형, 사회서비스형, 민간형</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">남해군청</h4>
+                    <p class="text-gray-300">경상남도 남해군 남해읍 홍현길 35</p>
+                    <p class="text-gray-300">전화: 055-860-8000</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">문의 및 도움</h4>
+                    <p class="text-gray-300">복지정책과: 055-860-8300</p>
+                    <p class="text-gray-300">기술지원: 055-860-8100</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">이용 안내</h4>
+                    <a href="#" class="text-gray-300 hover:text-white block">사용 방법</a>
+                    <a href="#" class="text-gray-300 hover:text-white block">개인정보 처리방침</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2024 남해군청. 모든 권리 보유.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 플로팅 음성 버튼 -->
+    <div class="floating-voice" id="floating-voice-btn" title="음성 안내" aria-label="음성 안내 버튼">
+        🔊
+    </div>
+
+    <!-- 사용자 정보 입력 모달 -->
+    <div id="user-info-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <h3 class="text-xl font-bold mb-4">기본 정보 입력</h3>
+                <p class="text-gray-600 mb-6">복지 혜택 추천을 위해 기본 정보를 입력해주세요.</p>
+                
+                <form id="user-info-form">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            이름 *
+                        </label>
+                        <input type="text" id="user-name" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            생년월일 *
+                        </label>
+                        <input type="date" id="user-birth" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            거주지 *
+                        </label>
+                        <select id="user-district" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                            <option value="">선택해주세요</option>
+                            <option value="namhae">남해읍</option>
+                            <option value="changseon">창선면</option>
+                            <option value="gohyeon">고현면</option>
+                            <option value="seolcheon">설천면</option>
+                            <option value="samdong">삼동면</option>
+                            <option value="minam">미조면</option>
+                            <option value="idong">이동면</option>
+                            <option value="sangju">상주면</option>
+                            <option value="Nam">남면</option>
+                            <option value="seo">서면</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="privacy-agree" class="mr-2" required>
+                            <span class="text-sm text-gray-600">개인정보 수집 및 이용에 동의합니다</span>
+                        </label>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button type="button" id="cancel-btn" class="btn btn-secondary flex-1">
+                            취소
+                        </button>
+                        <button type="submit" class="btn btn-primary flex-1">
+                            시작하기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 결과 조회 모달 -->
+    <div id="lookup-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="bg-white rounded-lg max-w-md w-full p-6">
+                <h3 class="text-xl font-bold mb-4">결과 조회</h3>
+                <p class="text-gray-600 mb-6">이전에 받은 조회 키를 입력하세요.</p>
+                
+                <form id="lookup-form">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            조회 키 *
+                        </label>
+                        <input type="text" id="lookup-key" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="예: ABC123DEF456" required>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <button type="button" id="lookup-cancel-btn" class="btn btn-secondary flex-1">
+                            취소
+                        </button>
+                        <button type="submit" class="btn btn-primary flex-1">
+                            조회하기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/main.js"></script>
+</body>
+</html> 

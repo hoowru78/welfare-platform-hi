@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>설문 조사 - 남해군 노인 복지 추천</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 커스텀 스타일 -->
+    <style>
+        :root {
+            --primary-500: #265DAB;
+            --primary-600: #1e40af;
+            --primary-100: #dbeafe;
+            --secondary-100: #E9F0FA;
+            --accent-400: #FFE66D;
+            --neutral-50: #F9F9F9;
+            --neutral-600: #4A4A4A;
+        }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--neutral-50);
+        }
+        
+        .text-size-normal {
+            font-size: 1.125rem;
+            line-height: 1.7;
+        }
+        
+        .text-size-medium {
+            font-size: 1.375rem;
+            line-height: 1.6;
+        }
+        
+        .text-size-large {
+            font-size: 1.5rem;
+            line-height: 1.5;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 44px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            line-height: 1.5;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-500);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-600);
+            transform: translateY(-1px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-100);
+            color: var(--primary-600);
+            border: 1px solid #cbd5e1;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .btn-accessibility {
+            min-height: 40px;
+            min-width: 40px;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: white;
+            border: 1px solid #cbd5e1;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-accessibility:hover {
+            background-color: var(--primary-100);
+            border-color: var(--primary-500);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-500);
+            transition: width 0.3s ease;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-number.active {
+            background-color: var(--primary-500);
+            color: white;
+        }
+        
+        .step-number.completed {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .step-title {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-align: center;
+        }
+        
+        .question-group {
+            margin-bottom: 2rem;
+        }
+        
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--neutral-600);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: white;
+        }
+        
+        .option-item:hover {
+            border-color: var(--primary-500);
+            background-color: var(--primary-100);
+        }
+        
+        .option-item.selected {
+            border-color: var(--primary-500);
+            background-color: var(--primary-100);
+        }
+        
+        .option-input {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            accent-color: var(--primary-500);
+        }
+        
+        .option-text {
+            flex: 1;
+            font-size: 1.125rem;
+        }
+        
+        .voice-btn {
+            background-color: var(--primary-500);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .voice-btn:hover {
+            background-color: var(--primary-600);
+            transform: scale(1.1);
+        }
+        
+        .floating-voice {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-500);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transition: all 0.2s;
+        }
+        
+        .floating-voice:hover {
+            background-color: var(--primary-600);
+            transform: scale(1.1);
+        }
+        
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .option-item {
+            background-color: #1a1a1a !important;
+            border-color: #ffffff !important;
+            color: #ffffff !important;
+        }
+        
+        .high-contrast .btn-primary {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+        }
+        
+        @media (max-width: 768px) {
+            .btn {
+                min-height: 48px;
+                padding: 0.875rem 1.5rem;
+            }
+            
+            .option-item {
+                padding: 0.875rem;
+            }
+            
+            .step-number {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen text-size-normal" id="main-body">
+    <!-- 접근성 스킵 링크 -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 bg-blue-600 text-white p-2 z-50">
+        본문으로 건너뛰기
+    </a>
+    
+    <!-- 헤더 -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="h-12 w-12 bg-blue-600 rounded-full flex items-center justify-center">
+                        <span class="text-white font-bold text-xl">남</span>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800">
+                        남해군 노인 복지 추천
+                    </h1>
+                </div>
+                
+                <!-- 접근성 도구 -->
+                <div class="flex items-center gap-2">
+                    <button id="font-size-btn" class="btn-accessibility" title="글자 크기 조절" aria-label="글자 크기 조절">
+                        <span class="font-bold">가</span>
+                    </button>
+                    <button id="voice-toggle-btn" class="btn-accessibility" title="음성 안내 토글" aria-label="음성 안내 토글">
+                        🔊
+                    </button>
+                    <button id="high-contrast-btn" class="btn-accessibility" title="고대비 모드" aria-label="고대비 모드">
+                        🌓
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 진행 상황 표시 -->
+    <div class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="step-indicator" id="step-indicator">
+                <div class="step">
+                    <div class="step-number active" id="step-1">1</div>
+                    <div class="step-title">건강 상태</div>
+                </div>
+                <div class="step">
+                    <div class="step-number" id="step-2">2</div>
+                    <div class="step-title">생활 환경</div>
+                </div>
+                <div class="step">
+                    <div class="step-number" id="step-3">3</div>
+                    <div class="step-title">경제 상황</div>
+                </div>
+                <div class="step">
+                    <div class="step-number" id="step-4">4</div>
+                    <div class="step-title">사회 관계</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 콘텐츠 -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 py-8">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-2xl font-bold text-gray-800" id="category-title">건강 상태에 대해 알려주세요</h2>
+                    <p class="text-gray-600 mt-2" id="category-description">
+                        어르신의 현재 건강 상태를 파악하여 적절한 복지 혜택을 추천해드립니다
+                    </p>
+                </div>
+                
+                <div class="p-6">
+                    <form id="survey-form">
+                        <div id="questions-container">
+                            <!-- 질문들이 동적으로 생성됩니다 -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 하단 고정 버튼 -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
+        <div class="max-w-7xl mx-auto max-w-3xl">
+            <div class="flex justify-between gap-4">
+                <button id="prev-btn" class="btn btn-secondary flex-1" disabled>
+                    ← 이전 단계
+                </button>
+                <button id="next-btn" class="btn btn-primary flex-1">
+                    다음 단계 →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 플로팅 음성 버튼 -->
+    <div class="floating-voice" id="floating-voice-btn" title="음성 안내" aria-label="음성 안내 버튼">
+        🔊
+    </div>
+
+    <!-- 로딩 오버레이 -->
+    <div id="analysis-loading" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white rounded-lg p-8 text-center max-w-md mx-4">
+                <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-6"></div>
+                <h3 class="text-xl font-bold mb-2">AI가 분석하고 있습니다</h3>
+                <p class="text-gray-600 mb-4">어르신의 설문 답변을 바탕으로 맞춤형 복지 혜택을 찾고 있습니다.</p>
+                <div class="text-sm text-gray-500">
+                    잠시만 기다려 주세요...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 전역 변수
+        let currentStep = 1;
+        let totalSteps = 4;
+        let currentQuestions = [];
+        let surveyAnswers = {};
+        let isVoiceEnabled = false;
+        let isHighContrast = false;
+        let fontSizeLevel = 1;
+        let speechSynthesis = window.speechSynthesis;
+        let currentUser = null;
+        let currentSession = null;
+        
+        // API 기본 URL
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        // DOM 요소들
+        const questionsContainer = document.getElementById('questions-container');
+        const categoryTitle = document.getElementById('category-title');
+        const categoryDescription = document.getElementById('category-description');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressFill = document.getElementById('progress-fill');
+        const fontSizeBtn = document.getElementById('font-size-btn');
+        const voiceToggleBtn = document.getElementById('voice-toggle-btn');
+        const highContrastBtn = document.getElementById('high-contrast-btn');
+        const floatingVoiceBtn = document.getElementById('floating-voice-btn');
+        const mainBody = document.getElementById('main-body');
+        const analysisLoading = document.getElementById('analysis-loading');
+        
+        // 초기화
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFromStorage();
+            loadUserPreferences();
+            initializeEventListeners();
+            loadCurrentStep();
+        });
+        
+        // 세션 스토리지에서 데이터 복원
+        function initializeFromStorage() {
+            const savedUser = sessionStorage.getItem('currentUser');
+            const savedSession = sessionStorage.getItem('currentSession');
+            
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+            
+            if (savedSession) {
+                currentSession = JSON.parse(savedSession);
+            }
+            
+            if (!currentUser || !currentSession) {
+                alert('세션이 만료되었습니다. 다시 시작해주세요.');
+                window.location.href = 'index.html';
+                return;
+            }
+        }
+        
+        // 이벤트 리스너 초기화
+        function initializeEventListeners() {
+            prevBtn.addEventListener('click', goToPreviousStep);
+            nextBtn.addEventListener('click', goToNextStep);
+            
+            // 접근성 버튼들
+            fontSizeBtn.addEventListener('click', toggleFontSize);
+            voiceToggleBtn.addEventListener('click', toggleVoice);
+            highContrastBtn.addEventListener('click', toggleHighContrast);
+            floatingVoiceBtn.addEventListener('click', toggleVoice);
+            
+            // 키보드 내비게이션
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
+                    goToPreviousStep();
+                } else if (e.key === 'ArrowRight') {
+                    goToNextStep();
+                }
+            });
+        }
+        
+        // 현재 단계 로드
+        async function loadCurrentStep() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/survey/questions?step=${currentStep}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    currentQuestions = data.questions;
+                    updateStepIndicator();
+                    updateProgressBar();
+                    renderQuestions(data);
+                    
+                    if (isVoiceEnabled) {
+                        speak(`${data.category} 설문을 시작합니다.`);
+                    }
+                } else {
+                    alert('설문 데이터를 불러오는데 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('서버 연결에 실패했습니다.');
+            }
+        }
+        
+        // 질문 렌더링
+        function renderQuestions(data) {
+            categoryTitle.textContent = `${data.category}에 대해 알려주세요`;
+            categoryDescription.textContent = `어르신의 현재 ${data.category.toLowerCase()}을 파악하여 적절한 복지 혜택을 추천해드립니다`;
+            
+            questionsContainer.innerHTML = '';
+            
+            data.questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-group';
+                
+                const questionHeader = document.createElement('div');
+                questionHeader.className = 'question-text';
+                questionHeader.innerHTML = `
+                    <span>${question.text}</span>
+                    <button type="button" class="voice-btn" onclick="speakQuestion('${question.text}')" aria-label="질문 음성 재생">
+                        🔊
+                    </button>
+                `;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'option-group';
+                
+                question.options.forEach((option, optionIndex) => {
+                    const optionLabel = document.createElement('label');
+                    optionLabel.className = 'option-item';
+                    
+                    const inputType = question.type === 'multiple_choice' ? 'checkbox' : 'radio';
+                    const inputName = question.type === 'multiple_choice' ? `${question.id}[]` : question.id;
+                    
+                    optionLabel.innerHTML = `
+                        <input type="${inputType}" name="${inputName}" value="${option.value}" 
+                               class="option-input" data-score="${option.score}"
+                               onchange="handleOptionChange('${question.id}', '${option.value}', ${option.score}, '${question.type}')">
+                        <span class="option-text">${option.text}</span>
+                    `;
+                    
+                    optionsDiv.appendChild(optionLabel);
+                });
+                
+                questionDiv.appendChild(questionHeader);
+                questionDiv.appendChild(optionsDiv);
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+        
+        // 옵션 변경 처리
+        function handleOptionChange(questionId, optionValue, score, questionType) {
+            if (!surveyAnswers[currentStep]) {
+                surveyAnswers[currentStep] = {};
+            }
+            
+            if (questionType === 'multiple_choice') {
+                if (!surveyAnswers[currentStep][questionId]) {
+                    surveyAnswers[currentStep][questionId] = [];
+                }
+                
+                const checkbox = event.target;
+                if (checkbox.checked) {
+                    surveyAnswers[currentStep][questionId].push({
+                        value: optionValue,
+                        score: score
+                    });
+                } else {
+                    surveyAnswers[currentStep][questionId] = surveyAnswers[currentStep][questionId].filter(
+                        item => item.value !== optionValue
+                    );
+                }
+            } else {
+                surveyAnswers[currentStep][questionId] = [{
+                    value: optionValue,
+                    score: score
+                }];
+            }
+            
+            // 부모 라벨에 선택 상태 클래스 추가/제거
+            const label = event.target.closest('.option-item');
+            if (event.target.checked) {
+                label.classList.add('selected');
+            } else {
+                label.classList.remove('selected');
+            }
+            
+            // 자동 저장
+            saveCurrentProgress();
+        }
+        
+        // 이전 단계로 이동
+        function goToPreviousStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                loadCurrentStep();
+                updateNavigationButtons();
+            }
+        }
+        
+        // 다음 단계로 이동
+        async function goToNextStep() {
+            // 현재 단계 답변 검증
+            if (!validateCurrentStep()) {
+                alert('모든 질문에 답해주세요.');
+                return;
+            }
+            
+            // 답변 저장
+            await saveStepAnswers();
+            
+            if (currentStep < totalSteps) {
+                currentStep++;
+                loadCurrentStep();
+                updateNavigationButtons();
+            } else {
+                // 모든 설문 완료 - 결과 생성
+                await generateResults();
+            }
+        }
+        
+        // 현재 단계 검증
+        function validateCurrentStep() {
+            const currentStepAnswers = surveyAnswers[currentStep];
+            
+            if (!currentStepAnswers) {
+                return false;
+            }
+            
+            // 모든 질문에 답했는지 확인
+            for (const question of currentQuestions) {
+                if (!currentStepAnswers[question.id] || currentStepAnswers[question.id].length === 0) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+        
+        // 단계별 답변 저장
+        async function saveStepAnswers() {
+            const answers = [];
+            
+            for (const [questionId, selectedOptions] of Object.entries(surveyAnswers[currentStep])) {
+                const totalScore = selectedOptions.reduce((sum, option) => sum + option.score, 0);
+                
+                answers.push({
+                    question_id: questionId,
+                    selected_options: selectedOptions.map(option => option.value),
+                    score: totalScore
+                });
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/survey/answer`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: currentSession.session_id,
+                        answers: answers
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (!data.success) {
+                    console.error('답변 저장 실패:', data.error);
+                }
+            } catch (error) {
+                console.error('답변 저장 중 오류:', error);
+            }
+        }
+        
+        // 결과 생성
+        async function generateResults() {
+            analysisLoading.classList.remove('hidden');
+            
+            if (isVoiceEnabled) {
+                speak('설문이 완료되었습니다. AI가 분석하고 있습니다.');
+            }
+            
+            try {
+                // 잠시 대기 (분석 시뮬레이션)
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                // 결과 페이지로 이동
+                window.location.href = `results.html?userKey=${currentUser.user_key}`;
+            } catch (error) {
+                console.error('결과 생성 중 오류:', error);
+                alert('결과 생성에 실패했습니다. 다시 시도해주세요.');
+            } finally {
+                analysisLoading.classList.add('hidden');
+            }
+        }
+        
+        // 단계 표시기 업데이트
+        function updateStepIndicator() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const stepElement = document.getElementById(`step-${i}`);
+                
+                if (i < currentStep) {
+                    stepElement.className = 'step-number completed';
+                } else if (i === currentStep) {
+                    stepElement.className = 'step-number active';
+                } else {
+                    stepElement.className = 'step-number';
+                }
+            }
+        }
+        
+        // 진행률 바 업데이트
+        function updateProgressBar() {
+            const percentage = (currentStep / totalSteps) * 100;
+            progressFill.style.width = `${percentage}%`;
+        }
+        
+        // 내비게이션 버튼 업데이트
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentStep === 1;
+            nextBtn.textContent = currentStep === totalSteps ? '결과 보기' : '다음 단계 →';
+        }
+        
+        // 현재 진행 상황 저장
+        function saveCurrentProgress() {
+            sessionStorage.setItem('surveyAnswers', JSON.stringify(surveyAnswers));
+            sessionStorage.setItem('currentStep', currentStep);
+        }
+        
+        // 질문 음성 재생
+        function speakQuestion(text) {
+            if (isVoiceEnabled) {
+                speak(text);
+            } else {
+                speak(text); // 질문 버튼은 음성 설정과 관계없이 항상 작동
+            }
+        }
+        
+        // 접근성 기능들 (main.js와 동일한 구현)
+        function toggleFontSize() {
+            fontSizeLevel = (fontSizeLevel % 3) + 1;
+            
+            const body = document.body;
+            body.classList.remove('text-size-normal', 'text-size-medium', 'text-size-large');
+            
+            switch (fontSizeLevel) {
+                case 1:
+                    body.classList.add('text-size-normal');
+                    break;
+                case 2:
+                    body.classList.add('text-size-medium');
+                    break;
+                case 3:
+                    body.classList.add('text-size-large');
+                    break;
+            }
+            
+            localStorage.setItem('fontSizeLevel', fontSizeLevel);
+            
+            if (isVoiceEnabled) {
+                speak(`글자 크기를 ${fontSizeLevel}단계로 조절했습니다.`);
+            }
+        }
+        
+        function toggleVoice() {
+            isVoiceEnabled = !isVoiceEnabled;
+            
+            if (isVoiceEnabled) {
+                voiceToggleBtn.classList.add('bg-blue-100', 'border-blue-500');
+                floatingVoiceBtn.classList.add('bg-blue-700');
+                speak('음성 안내가 켜졌습니다.');
+            } else {
+                voiceToggleBtn.classList.remove('bg-blue-100', 'border-blue-500');
+                floatingVoiceBtn.classList.remove('bg-blue-700');
+                
+                if (speechSynthesis.speaking) {
+                    speechSynthesis.cancel();
+                }
+            }
+            
+            localStorage.setItem('isVoiceEnabled', isVoiceEnabled);
+        }
+        
+        function toggleHighContrast() {
+            isHighContrast = !isHighContrast;
+            
+            if (isHighContrast) {
+                mainBody.classList.add('high-contrast');
+                highContrastBtn.classList.add('bg-yellow-400', 'border-yellow-600');
+            } else {
+                mainBody.classList.remove('high-contrast');
+                highContrastBtn.classList.remove('bg-yellow-400', 'border-yellow-600');
+            }
+            
+            localStorage.setItem('isHighContrast', isHighContrast);
+            
+            if (isVoiceEnabled) {
+                speak(`고대비 모드가 ${isHighContrast ? '켜졌습니다' : '꺼졌습니다'}.`);
+            }
+        }
+        
+        function speak(text) {
+            if (!speechSynthesis) return;
+            
+            if (speechSynthesis.speaking) {
+                speechSynthesis.cancel();
+            }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ko-KR';
+            utterance.rate = 0.8;
+            utterance.pitch = 1;
+            
+            speechSynthesis.speak(utterance);
+        }
+        
+        function loadUserPreferences() {
+            const savedFontSize = localStorage.getItem('fontSizeLevel');
+            if (savedFontSize) {
+                fontSizeLevel = parseInt(savedFontSize);
+                const body = document.body;
+                body.classList.remove('text-size-normal', 'text-size-medium', 'text-size-large');
+                
+                switch (fontSizeLevel) {
+                    case 1:
+                        body.classList.add('text-size-normal');
+                        break;
+                    case 2:
+                        body.classList.add('text-size-medium');
+                        break;
+                    case 3:
+                        body.classList.add('text-size-large');
+                        break;
+                }
+            }
+            
+            const savedVoice = localStorage.getItem('isVoiceEnabled');
+            if (savedVoice === 'true') {
+                isVoiceEnabled = true;
+                voiceToggleBtn.classList.add('bg-blue-100', 'border-blue-500');
+                floatingVoiceBtn.classList.add('bg-blue-700');
+            }
+            
+            const savedHighContrast = localStorage.getItem('isHighContrast');
+            if (savedHighContrast === 'true') {
+                isHighContrast = true;
+                mainBody.classList.add('high-contrast');
+                highContrastBtn.classList.add('bg-yellow-400', 'border-yellow-600');
+            }
+        }
+        
+        // 페이지 이탈 방지
+        window.addEventListener('beforeunload', function(e) {
+            if (Object.keys(surveyAnswers).length > 0) {
+                const message = '설문이 완료되지 않았습니다. 정말 나가시겠습니까?';
+                e.preventDefault();
+                e.returnValue = message;
+                return message;
+            }
+        });
+        
+        // 초기 상태 설정
+        updateNavigationButtons();
+    </script>
+</body>
+</html> 
